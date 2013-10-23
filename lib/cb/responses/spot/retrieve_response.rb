@@ -1,28 +1,32 @@
-module Cb::Responses::Spot
-  class Retrieve < Cb::Responses::RawApiResponse
+module Cb::Responses
+  module Spot
+    class Retrieve < ApiResponse
 
-    ROOT_NODE = 'ResponseRetrieve'
-    SPOT_COLLECTION = 'SpotData'
+      protected
 
-    class << self
-      def extract_models(raw_api_response)
-        new(raw_api_response).extract_models
+      def root_node
+        'ResponseRetrieve'
       end
-    end
 
-    def initialize(raw_api_response={})
-      super(raw_api_response)
-    end
+      def validate_api_response
+        require_response_hash_key root_node,            api_response_hash
+        require_response_hash_key spot_collection_node, api_response_hash[root_node]
+      end
 
-    def validate_raw_api_response
-      required_response_field ROOT_NODE, raw_api_hash
-      required_response_field SPOT_COLLECTION, raw_api_hash[ROOT_NODE]
-    end
+      def extract_models
+        spot_collection.map { |spot_data| Cb::Models::Spot.new(spot_data) }
+      end
 
-    def extract_models
-      spot_models = raw_api_hash[ROOT_NODE][SPOT_COLLECTION].map { |spot_data| Cb::Models::Spot.new(spot_data) }
-      Cb::Utils::Api.new.append_api_responses(spot_models, raw_api_hash[ROOT_NODE])
-    end
+      private
 
+      def spot_collection
+        api_response_hash[root_node][spot_collection_node]
+      end
+
+      def spot_collection_node
+        'SpotData'
+      end
+
+    end
   end
 end

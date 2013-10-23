@@ -4,9 +4,10 @@ module Cb
   describe Cb::ApiClients::Spot do
 
     it 'caches the Cb::Utils::Api client for subsecuent calls' do
-      # using Object#send since #api_client is a private method
-      api_client          = ApiClients::Spot.send(:api_client)
-      the_same_api_client = ApiClients::Spot.send(:api_client)
+      client = ApiClients::Spot.new
+
+      api_client          = client.send(:api_client)
+      the_same_api_client = client.send(:api_client)
 
       api_client.should eq the_same_api_client
       api_client.object_id.should eq the_same_api_client.object_id
@@ -56,16 +57,18 @@ module Cb
       end
 
       context 'when the API response is missing nodes' do
+        let(:spot_client) { ApiClients::Spot.new }
+
         def restub_mocked_api
           api = Cb::Utils::Api.new
           api.class.stub(:criteria_to_hash)
           api.stub(:cb_get).and_return(@fake_mangled_response)
-          ApiClients::Spot.stub(:api_client).and_return(api)
+          spot_client.stub(:api_client).and_return(api)
         end
 
         def expect_fields_missing_exception
           expect {
-            ApiClients::Spot.retrieve(@criteria)
+            spot_client.retrieve(@criteria)
           }.to raise_error ExpectedResponseFieldMissing
         end
 

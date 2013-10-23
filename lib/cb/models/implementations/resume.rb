@@ -1,5 +1,5 @@
 module Cb
-  class CbResume
+  class Resume
     attr_accessor :external_resume_id, :external_user_id,
                   :did, :title, :visibility, :resume_text,
                   :email, :real_name, :gender, :phone, :birth_date,
@@ -49,10 +49,10 @@ module Cb
         ce = args['CompanyExperiences']['CompanyExperience']
         if ce.is_a? Array
           ce.each do | hi |
-            @company_experiences << CbResume::CbCompanyExperience.new(hi)
+            @company_experiences << Resume::CompanyExperience.new(hi)
           end
         elsif ce.is_a? Hash
-          @company_experiences << CbResume::CbCompanyExperience.new(ce)
+          @company_experiences << Resume::CompanyExperience.new(ce)
         end
       end
 
@@ -61,10 +61,10 @@ module Cb
         ed = args['Educations']['Education']
         if ed.is_a? Array
           ed.each do | hello |
-            @educations << CbResume::CbEducation.new(hello)
+            @educations << Resume::Education.new(hello)
           end
         elsif ed.is_a? Hash
-          @educations << CbResume::CbEducation.new(ed)
+          @educations << Resume::Education.new(ed)
         end
       end
 
@@ -73,10 +73,10 @@ module Cb
         la = args['Languages']['Language']
         if la.is_a? Array
           la.each do | greetings |
-            @languages << CbResume::CbLanguage.new(greetings)
+            @languages << Resume::Language.new(greetings)
           end
         elsif la.is_a? String
-          @languages << CbResume::CbLanguage.new(la)
+          @languages << Resume::Language.new(la)
         end
       end
 
@@ -85,10 +85,10 @@ module Cb
         cv = args['CustomValues']['CustomValue']
         if cv.is_a? Array
           cv.each do | hola |
-            @custom_values << CbResume::CbCustomValue.new(hola)
+            @custom_values << Resume::CustomValue.new(hola)
           end
         elsif cv.is_a? Hash
-          @custom_values << CbResume::CbCustomValue.new(cv)
+          @custom_values << Resume::CustomValue.new(cv)
         end
       end
     end
@@ -98,19 +98,19 @@ module Cb
     end
 
     def add_company_experience(params)
-      @company_experiences << CbResume::CbCompanyExperience.new(params)
+      @company_experiences << Resume::CompanyExperience.new(params)
     end
 
     def add_education(params)
-      @educations << CbResume::CbEducation.new(params)
+      @educations << Resume::Education.new(params)
     end
 
     def add_language(params)
-      @languages << CbResume::CbLanguage.new(params)
+      @languages << Resume::Language.new(params)
     end
 
     def add_custom_value(params)
-      @custom_values << CbResume::CbCustomValue.new(params)
+      @custom_values << Resume::CustomValue.new(params)
     end
 
     def custom_value custom_value_key
@@ -176,7 +176,7 @@ module Cb
     end
   end
 
-  class CbResume::CbCompanyExperience
+  class Resume::CompanyExperience
     attr_accessor :job_title, :company_name, :start_date, :end_date, :is_current, :details
 
     def initialize(args = {})
@@ -189,7 +189,7 @@ module Cb
     end
   end
 
-  class CbResume::CbEducation
+  class Resume::Education
     attr_accessor :school_name, :major, :degree_name, :degree_code, :graduation_date, :gpa
 
     def initialize(args = {})
@@ -202,7 +202,7 @@ module Cb
     end
   end
 
-  class CbResume::CbLanguage
+  class Resume::Language
     attr_accessor :name
 
     def initialize(code = '')
@@ -210,7 +210,7 @@ module Cb
     end
   end
 
-  class CbResume::CbCustomValue
+  class Resume::CustomValue
     attr_accessor :key, :value
 
     def initialize(args = {})

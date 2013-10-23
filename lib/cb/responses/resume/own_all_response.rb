@@ -1,29 +1,34 @@
 module Cb::Responses
   module Resume
-    class OwnAll < RawApiResponse
+    class OwnAll < ApiResponse
 
-      ROOT_NODE       = 'ResponseOwnResumes'
-      COLLECTION_NODE = 'Resumes'
-      MODEL_NODE      = 'Resume'
-
-      def self.extract_models(api_output_hash)
-        new(api_output_hash).extract_models
-      end
-
-      def validate_raw_api_response
-        required_response_field ROOT_NODE, raw_api_hash
-        required_response_field COLLECTION_NODE, raw_api_hash[ROOT_NODE]
+      def validate_api_response
+        require_response_hash_key root_node, api_response_hash
+        require_response_hash_key collection_node, api_response_hash[root_node]
       end
 
       def extract_models
-        resumes = resume_hashes.map { |resume| Cb::CbResume.new(resume) }
-        Cb::Utils::Api.new.append_api_responses(resumes, raw_api_hash[ROOT_NODE])
+        resume_hashes.map { |resume| Cb::Resume.new(resume) }
+      end
+
+      protected
+
+      def root_node
+        'ResponseOwnResumes'
       end
 
       private
 
       def resume_hashes
-        raw_api_hash[ROOT_NODE][COLLECTION_NODE][MODEL_NODE]
+        api_response_hash[root_node][collection_node][model_node]
+      end
+
+      def collection_node
+        'Resumes'
+      end
+
+      def model_node
+        'Resume'
       end
 
     end

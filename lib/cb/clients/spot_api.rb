@@ -1,17 +1,22 @@
 require 'json'
 
-module Cb::ApiClients
-  class Spot
-    class << self
+module Cb
+  module ApiClients
+    class Spot
+
+      def self.retrieve(criteria)
+        new.retrieve(criteria)
+      end
 
       def retrieve(criteria)
-        response = retrieve_api_response criteria
-        Cb::Responses::Spot::Retrieve.extract_models response
+        api_hash = retrieve_api_data criteria
+        response = Cb::Responses::Spot::Retrieve.new(api_hash)
+        response.models
       end
 
       private
 
-      def retrieve_api_response(criteria)
+      def retrieve_api_data(criteria)
         params = api_client.class.criteria_to_hash criteria
         api_client.cb_get(Cb.configuration.uri_spot_retrieve, :query => params)
       end
