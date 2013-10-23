@@ -2,6 +2,11 @@ module Cb::Responses
   module Resume
     class OwnAll < ApiResponse
 
+      def initialize(api_response_hash={}, user_external_id)
+        super(api_response_hash)
+        @user_external_id = user_external_id
+      end
+
       def validate_api_response
         require_response_hash_key root_node,       api_response_hash
         require_response_hash_key collection_node, api_response_hash[root_node]
@@ -11,7 +16,11 @@ module Cb::Responses
       protected
 
       def extract_models
-        resume_hashes.map { |resume| Cb::Resume.new(resume) }
+        resume_hashes.map do |resume|
+          resume = Cb::Resume.new(resume)
+          resume.external_user_id = @user_external_id
+          resume
+        end
       end
 
       def root_node

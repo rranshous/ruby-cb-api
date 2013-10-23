@@ -39,7 +39,7 @@ module Cb
       @stats_applications       = !args['Stats'].nil? ? args['Stats']['Applications'] : -1
 
       #These don't come back on retrieve
-      @external_resume_id       = '' if @external_resume_id.blank?
+      @external_resume_id       = args['ExternalID'] || String.new
       @external_user_id         = '' if @external_user_id.blank?
 
       @test = false
