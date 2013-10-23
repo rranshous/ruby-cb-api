@@ -2,10 +2,10 @@ module Cb
   module Models
     class ApiResponseModel
 
-      attr_accessor :api_response
+      attr_accessor :source_hash
 
-      def initialize(response={})
-        @api_response = response
+      def initialize(response_hash={})
+        @source_hash = response_hash
         validate_api_response
         set_model_properties
       end
@@ -25,7 +25,7 @@ module Cb
       private
 
       def validate_api_response
-        missing_fields  = required_fields.map { |field| field unless @api_response.has_key?(field) }.compact
+        missing_fields  = required_fields.map { |field| field unless @source_hash.has_key?(field) }.compact
         raise ExpectedResponseFieldMissing.new(missing_fields.join(' ')) unless missing_fields.empty?
       end
 

@@ -13,7 +13,7 @@ module Cb
           end
 
           def set_model_properties
-            @stuff = api_response['potatoes'] || String.new
+            @stuff = source_hash['potatoes'] || String.new
           end
         end
 
