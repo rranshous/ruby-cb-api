@@ -3,15 +3,16 @@ module Cb::Responses
     class OwnAll < ApiResponse
 
       def validate_api_response
-        require_response_hash_key root_node, api_response_hash
+        require_response_hash_key root_node,       api_response_hash
         require_response_hash_key collection_node, api_response_hash[root_node]
+        require_response_hash_key model_node,      api_response_hash[root_node][collection_node]
       end
+
+      protected
 
       def extract_models
         resume_hashes.map { |resume| Cb::Resume.new(resume) }
       end
-
-      protected
 
       def root_node
         'ResponseOwnResumes'
