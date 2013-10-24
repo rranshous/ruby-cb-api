@@ -176,31 +176,9 @@ module Cb
     end
   end
 
-  class Resume::CompanyExperience
-    attr_accessor :job_title, :company_name, :start_date, :end_date, :is_current, :details
 
-    def initialize(args = {})
-      @job_title        = args['JobTitle'] || ''
-      @company_name     = args['CompanyName'] || ''
-      @start_date       = args['StartDate'] || ''
-      @end_date         = args['EndDate'] || ''
-      @is_current       = args['IsCurrent'] || ''
-      @details          = args['Details'] || ''
-    end
-  end
 
-  class Resume::Education
-    attr_accessor :school_name, :major, :degree_name, :degree_code, :graduation_date, :gpa
 
-    def initialize(args = {})
-      @school_name      = args['SchoolName'] || ''
-      @major            = args['Major'] || ''
-      @degree_name      = args['DegreeName'] || ''
-      @degree_code      = args['DegreeCode'] || ''
-      @graduation_date  = args['GraduationDate'] || ''
-      @gpa              = args['GPA'] || ''
-    end
-  end
 
   class Resume::Language
     attr_accessor :name
