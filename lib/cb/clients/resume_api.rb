@@ -1,5 +1,3 @@
-require 'json'
-
 module Cb
   class ResumeApi
     #############################################################
@@ -15,25 +13,14 @@ module Cb
     ## http://www.careerbuilder.com/api/ResumeInfo.aspx
     #############################################################
     def self.own_all(external_user_id, ignore_host_site = false)
-      my_api = Cb::Utils::Api.new
-      params = {"ExternalUserID" => external_user_id}
-      if ignore_host_site
-        params['IgnoreHostSite'] = 'true'
-      end
-      json_hash = my_api.cb_get(Cb.configuration.uri_resume_own_all, :query => params)
+      params = { 'ExternalUserID' => external_user_id }
+      params['IgnoreHostSite'] = 'true' if ignore_host_site
 
-      resumes = []
-
-      if json_hash.has_key?('ResponseOwnResumes') && json_hash['ResponseOwnResumes'].has_key?('Resumes')
-        json_hash['ResponseOwnResumes']['Resumes']['Resume'].each do |resume_hash|
-          resume = Cb::Resume.new resume_hash
-          resume.external_resume_id = resume_hash['ExternalID']
-          resume.external_user_id = external_user_id
-          resumes << resume
-        end
-      end
-
-      return resumes
+      response_hash = api_client.cb_get(Cb.configuration.uri_resume_own_all, :query => params)
+      
+      resumes = Responses::Resume::OwnAll.new(response_hash).models
+      resumes.each { |resume| resume.user_external_id = external_user_id }
+      resumes
     end
 
     #############################################################
@@ -45,11 +32,11 @@ module Cb
     def self.retrieve_by_id resume_external_id, external_user_id
       my_api = Cb::Utils::Api.new
       params = {"ExternalID" => external_id, "ExternalUserID" => external_user_id}
-      json_hash = my_api.cb_get(Cb.configuration.uri_resume_retrieve, :query => params)
+      response_hash = my_api.cb_get(Cb.configuration.uri_resume_retrieve, :query => params)
 
-      if json_hash.has_key?('ResponseRetrieve') && json_hash['ResponseRetrieve'].has_key?('Resume')
-        resume = Cb::Resume.new json_hash['ResponseRetrieve']['Resume']
-        my_api.append_api_responses resume, json_hash['ResponseRetrieve']
+      if response_hash.has_key?('ResponseRetrieve') && response_hash['ResponseRetrieve'].has_key?('Resume')
+        resume = Cb::Resume.new response_hash['ResponseRetrieve']['Resume']
+        my_api.append_api_responses resume, response_hash['ResponseRetrieve']
       end
 
       return resume
@@ -64,11 +51,11 @@ module Cb
     def self.retrieve resume
       my_api = Cb::Utils::Api.new
       params = {"ExternalID" => resume.external_resume_id, "ExternalUserID" => resume.external_user_id}
-      json_hash = my_api.cb_get(Cb.configuration.uri_resume_retrieve, :query => params)
+      response_hash = my_api.cb_get(Cb.configuration.uri_resume_retrieve, :query => params)
 
-      if json_hash.has_key?('ResponseRetrieve') && json_hash['ResponseRetrieve'].has_key?('Resume')
-        resume = resume.set_attributes json_hash['ResponseRetrieve']['Resume']
-        my_api.append_api_responses resume, json_hash['ResponseRetrieve']
+      if response_hash.has_key?('ResponseRetrieve') && response_hash['ResponseRetrieve'].has_key?('Resume')
+        resume = resume.set_attributes response_hash['ResponseRetrieve']['Resume']
+        my_api.append_api_responses resume, response_hash['ResponseRetrieve']
       end
 
       return resume
@@ -82,7 +69,7 @@ module Cb
     #############################################################
     def self.create resume
       my_api = Cb::Utils::Api.new
-      json_hash = my_api.cb_post(Cb.configuration.uri_resume_create, :body => make_create_xml(resume))
+      response_hash = my_api.cb_post(Cb.configuration.uri_resume_create, :body => make_create_xml(resume))
     end
 
     #############################################################
@@ -93,7 +80,7 @@ module Cb
     #############################################################
     def self.update resume
       my_api = Cb::Utils::Api.new
-      json_hash = my_api.cb_post(Cb.configuration.uri_resume_update, :body => make_update_xml(resume))
+      response_hash = my_api.cb_post(Cb.configuration.uri_resume_update, :body => make_update_xml(resume))
     end
 
     #############################################################
@@ -104,7 +91,7 @@ module Cb
     #############################################################
     def self.delete resume
       my_api = Cb::Utils::Api.new
-      json_hash = my_api.cb_post(Cb.configuration.uri_resume_delete, :body => make_delete_xml(resume))
+      response_hash = my_api.cb_post(Cb.configuration.uri_resume_delete, :body => make_delete_xml(resume))
     end
 
     private
@@ -180,6 +167,12 @@ module Cb
       xml += "<ExternalUserID>#{resume.external_user_id}</ExternalUserID>"
       xml += '</Request>'
       xml
+    end
+
+    private
+
+    def api_client
+      @cb_api_client ||= Cb::Utils::Api.new
     end
   end
 end

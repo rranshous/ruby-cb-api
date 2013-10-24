@@ -4,12 +4,7 @@ module Cb::Models
     attr_accessor :content_type, :start_date, :end_date, :sequence, :language, :experiment_weight_custom_column,
                   :field_1, :field_2, :field_3, :field_4, :field_5, :field_6, :field_7, :field_8,
                   :text_1, :text_2, :text_3, :text_4
-
-    def initialize(response={})
-      super(response)
-    end
-
-    private
+    protected
 
     def required_fields
       %w(ContentType StartDate EndDate Sequence Language)
