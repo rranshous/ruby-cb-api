@@ -6,28 +6,30 @@ module Cb
     context '#own_all' do
       context 'when pinging the API' do
         let(:api) { double(Cb::Utils::Api) }
+        let(:api_response) do { 'ResponseOwnResumes' => { 'Resumes' => { 'Resume' => [Hash.new] } } } end
 
         before :each do
           api.stub(:cb_get)
+          api.stub(:append_api_responses)
           Cb::Utils::Api.stub(:new).and_return(api)
         end
 
         it 'hits the resume own all endpoint' do
           endpoint_url = Cb.configuration.uri_resume_own_all
-          api.should_receive(:cb_get).with(endpoint_url, kind_of(Hash)).and_return(Hash.new)
+          api.should_receive(:cb_get).with(endpoint_url, kind_of(Hash)).and_return(api_response)
           Cb::ResumeApi.own_all('xid')
         end
 
         it 'includes external user ID in the query string' do
           query = { query: { 'ExternalUserID' => 'xid' } }
-          api.should_receive(:cb_get).with(kind_of(String), query).and_return(Hash.new)
+          api.should_receive(:cb_get).with(kind_of(String), query).and_return(api_response)
           Cb::ResumeApi.own_all('xid')
         end
 
         context 'and ignore_host_site optional param is true' do
           it 'includes hostsite ignore flag in the query string' do
             query = { query: { 'ExternalUserID' => 'xid', 'IgnoreHostSite' => 'true' } }
-            api.should_receive(:cb_get).with(kind_of(String), query).and_return(Hash.new)
+            api.should_receive(:cb_get).with(kind_of(String), query).and_return(api_response)
             Cb::ResumeApi.own_all('xid', true)
           end
         end
@@ -55,9 +57,7 @@ module Cb
           before(:each) { stub_api_to_return(Hash.new) }
 
           it 'returns an empty array' do
-            models = Cb::ResumeApi.own_all('xid')
-            expect(models).to be_an_instance_of Array
-            expect(models.empty?).to eq true
+            expect { Cb::ResumeApi.own_all('xid') }.to raise_error ExpectedResponseFieldMissing
           end
         end
 
@@ -65,9 +65,7 @@ module Cb
           before(:each) { stub_api_to_return({ ResponseOwnResumes: Hash.new }) }
 
           it 'returns an empty array' do
-            models = Cb::ResumeApi.own_all('xid')
-            expect(models).to be_an_instance_of Array
-            expect(models.empty?).to eq true
+            expect { Cb::ResumeApi.own_all('xid') }.to raise_error ExpectedResponseFieldMissing
           end
         end
 
@@ -75,7 +73,7 @@ module Cb
           before(:each) { stub_api_to_return({ ResponseOwnResumes: { Resumes: Hash.new } }) }
 
           it 'raises NoMethodError when #each is attempted on the missing enumerable node' do
-            expect { Cb::ResumeApi.own_all('xid') }.to raise_error NoMethodError
+            expect { Cb::ResumeApi.own_all('xid') }.to raise_error ExpectedResponseFieldMissing
           end
         end
       end
@@ -92,6 +90,11 @@ module Cb
       mock_resume.stub(:external_resume_id).and_return('xrid')
       mock_resume.stub(:external_user_id).and_return('xuid')
       mock_resume.stub(:set_attributes)
+      mock_resume.stub(:user_external_id)
+      mock_resume.stub(:test)
+      mock_resume.stub(:make_delete_xml)
+      mock_resume.stub(:make_update_xml)
+      mock_resume.stub(:make_create_xml)
     end
 
     context '#retrieve' do
@@ -178,14 +181,14 @@ module Cb
 
     context '#create' do
       before(:each) do
-        Cb::ResumeApi.stub(:make_create_xml)
+        mock_resume.stub(:make_create_xml)
         stub_request(:post, uri_stem(Cb.configuration.uri_resume_create)).
           with(:body => anything).
           to_return(:body => Hash.new.to_json)
       end
 
       it 'creates the xml API request based off of the input resume' do
-        Cb::ResumeApi.should_receive(:make_create_xml)
+        mock_resume.should_receive(:make_create_xml)
         Cb::ResumeApi.create(mock_resume)
       end
 
@@ -202,14 +205,14 @@ module Cb
 
     context '#update' do
       before(:each) do
-        Cb::ResumeApi.stub(:make_update_xml)
+        mock_resume.stub(:make_update_xml)
         stub_request(:post, uri_stem(Cb.configuration.uri_resume_update)).
           with(:body => anything).
           to_return(:body => Hash.new.to_json)
       end
 
       it 'creates the xml API request based off of the input resume' do
-        Cb::ResumeApi.should_receive(:make_update_xml)
+        mock_resume.should_receive(:make_update_xml)
         Cb::ResumeApi.update(mock_resume)
       end
 
@@ -225,15 +228,15 @@ module Cb
     end
 
     context '#delete' do
+
       before(:each) do
-        Cb::ResumeApi.stub(:make_delete_xml)
         stub_request(:post, uri_stem(Cb.configuration.uri_resume_delete)).
           with(:body => anything).
           to_return(:body => Hash.new.to_json)
       end
 
       it 'creates the xml API request based off of the input resume' do
-        Cb::ResumeApi.should_receive(:make_delete_xml)
+        mock_resume.should_receive(:make_delete_xml)
         Cb::ResumeApi.delete(mock_resume)
       end
 
@@ -247,41 +250,5 @@ module Cb
         Cb::ResumeApi.delete(mock_resume)
       end
     end
-
-    context 'important private methods' do
-      let(:resume) do
-        resume = Resume.new
-        resume.external_resume_id = 'xid'
-        resume.external_user_id = 'xuid'
-        resume.company_experiences = [Resume::CompanyExperience.new]
-        resume.educations = [Resume::Education.new]
-        resume.languages = %w(english)
-        resume
-      end
-
-      context '#make_create_xml' do
-        it 'produces valid xml' do
-          pending 'this method throws exceptions trying to call methods on resume that do not exist. is this code even used anywhere?'
-          xml = Cb::ResumeApi.new.send(:make_create_xml, resume)
-          Nokogiri::XML::Document.parse(xml) # if this fails, invalid xml!
-        end
-      end
-
-      context '#make_update_xml' do
-        it 'produces valid xml' do
-          pending 'this method throws exceptions trying to call methods on resume that do not exist. is this code even used anywhere?'
-          xml = Cb::ResumeApi.new.send(:make_update_xml, resume)
-          Nokogiri::XML::Document.parse(xml) # if this fails, invalid xml!
-        end
-      end
-
-      context '#make_delete_xml' do
-        it 'produces valid xml' do
-          xml = Cb::ResumeApi.new.send(:make_delete_xml, resume)
-          Nokogiri::XML::Document.parse(xml) # if this fails, invalid xml!
-        end
-      end
-    end
-
   end
 end

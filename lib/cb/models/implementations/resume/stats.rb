@@ -1,15 +1,10 @@
 module Cb
   class Resume
-    class Stats < ApiResponseModel
+    class Stats
       attr_accessor :searches, :clicks, :applications
 
-      protected
 
-      def required_fields
-        %w(Searches Clicks Applications)
-      end
-
-      def set_model_properties
+      def initialize(source_hash = {})
         @searches      = source_hash['Searches']     || -1
         @clicks        = source_hash['Clicks']       || -1
         @applications  = source_hash['Applications'] || -1

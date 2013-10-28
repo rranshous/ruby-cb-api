@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Cb::Responses::Resume::OwnAll do
   describe '#new' do
     it 'produces the appropriate type' do
-      expect(Cb::Responses::Resume::OwnAll.new('user_external_id')).to be_an_instance_of Cb::Responses::Resume::OwnAll
+      expect(Cb::Responses::Resume::OwnAll.new(Hash.new)).to be_an_instance_of Cb::Responses::Resume::OwnAll
     end
   end
 
@@ -14,12 +14,12 @@ describe Cb::Responses::Resume::OwnAll do
       end
 
       it 'returns an array' do
-        response = Cb::Responses::Resume::OwnAll.new(api_hash, 'user_external_id')
+        response = Cb::Responses::Resume::OwnAll.new(api_hash)
         expect(response.models).to be_an_instance_of Array
       end
 
       it 'returned array contains resume models' do
-        response = Cb::Responses::Resume::OwnAll.new(api_hash, 'user_external_id')
+        response = Cb::Responses::Resume::OwnAll.new(api_hash)
         expect(response.models.first).to be_an_instance_of Cb::Resume
       end
     end
@@ -27,7 +27,7 @@ describe Cb::Responses::Resume::OwnAll do
     context 'when the API hash is missing nodes' do
       def self.expect_missing_field_exception
         it 'raises an exception for the missing node' do
-          response = Cb::Responses::Resume::OwnAll.new(api_hash, 'user_external_id')
+          response = Cb::Responses::Resume::OwnAll.new(api_hash)
           expect { response.models }.to raise_error Cb::ExpectedResponseFieldMissing
         end
       end

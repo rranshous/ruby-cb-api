@@ -5,8 +5,8 @@ module Cb
       attr_accessor :key, :value
 
       def initialize(args = {})
-        @key              = args['Key'] || ''
-        @value            = args['Value'] || ''
+        @key              = args['Key']   || String.new
+        @value            = args['Value'] || String.new
       end
     end
   end

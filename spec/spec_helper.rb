@@ -10,6 +10,7 @@ end
 
 require 'rubygems'
 require 'cb'
+require 'rspec'
 require 'webmock/rspec'
 
 WebMock.disable_net_connect!
