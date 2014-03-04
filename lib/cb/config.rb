@@ -125,7 +125,7 @@ module Cb
       @time_out             = 5
       @use_json             = true
       @host_site            = Cb.country.US
-      @test_mode            = false
+      @test_mode            = true
 
       set_default_api_uris
     end

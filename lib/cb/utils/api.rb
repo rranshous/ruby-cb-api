@@ -1,4 +1,6 @@
 require 'httparty'
+require 'nori'
+require 'xmlsimple'
 
 module Cb
   module Utils
@@ -18,7 +20,6 @@ module Cb
 
       def cb_get(path, options={})
         self.class.base_uri Cb.configuration.base_uri
-        puts "OPTIONS: #{options}"
         response = self.class.get(path, options)
         validated_response = ResponseValidator.validate(response)
         set_api_error(validated_response)
@@ -28,7 +29,7 @@ module Cb
       def cb_post(path, options={})
         self.class.base_uri Cb.configuration.base_uri
         options[:body] = insert_test_node(options[:body]) if Cb.configuration.test_mode
-        puts "BODY: #{options[:body]}"
+        puts " --- POST BODY : #{options[:body]}"
         response = self.class.post(path, options)
         validated_response = ResponseValidator.validate(response)
         set_api_error(validated_response)
@@ -37,6 +38,8 @@ module Cb
 
       def cb_put(path, options={})
         self.class.base_uri Cb.configuration.base_uri
+        options[:body] = insert_test_node(options[:body]) if Cb.configuration.test_mode
+        puts " --- PUT BODY (after test node): #{options[:body]}"
         response = self.class.put(path, options)
         validated_response = ResponseValidator.validate(response)
         set_api_error(validated_response)
@@ -90,16 +93,26 @@ module Cb
       end
 
       def insert_test_node(post_content)
-        # determine xml or json
-        if post_content.match(/xml/)
-          #insert xml node
-          parsed_xml = Nokogiri.parse(post_content)
-          test_node = Nokogiri::XML::Node.new "Test", parsed_xml
-          test_node.content = false
-          test_node.parent = parsed_xml.root
-          parsed_xml
-        else
-          #insert json node
+        puts " -- -- -- POST CONTENT: #{post_content}"
+        begin
+          xml_hash = nori.parse post_content
+          test_node = {"Test" => true}
+          xml_hash.keys.each do |key|
+            if matched = key.match(/request/i)
+              xml_hash[matched.to_s].merge! test_node
+              break
+            end
+          end
+          puts " - - HASH OUT: #{xml_hash}"f
+          puts " - - XML OUT: #{XmlSimple.xml_out xml_hash}"
+        end
+      end
+
+      def insert_test_json(post_content)
+        begin
+          post_content
+        rescue JSON::ParserError
+          post_content
         end
       end
 
@@ -117,6 +130,10 @@ module Cb
       def format_hash_key(api_hash_key)
         return String.new unless api_hash_key.respond_to?(:snakecase)
         api_hash_key.snakecase
+      end
+
+      def nori
+        Nori.new({:parser => :rexml})
       end
     end
   end
