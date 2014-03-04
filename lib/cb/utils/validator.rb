@@ -1,5 +1,6 @@
 require 'json'
 require 'nori'
+require 'xmlsimple'
 
 module Cb
   module ResponseValidator
