@@ -18,7 +18,7 @@ module Cb
 
         def extract_models
           Cb::Models::Company.new(company)
-          end
+        end
 
         private
 
