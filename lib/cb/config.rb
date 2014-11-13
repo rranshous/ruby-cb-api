@@ -89,6 +89,7 @@ module Cb
       @uri_resume_language_codes          ||= '/v1/languagecodes'
       @uri_country_codes                  ||= '/v1/countrycodes'
       @uri_resume_education               ||= '/cbapi/datalist/resumeeducation'
+      @uri_state                          ||= 'http://www.careerbuilder.com//AJAX/CitySuggest.aspx'
     end
 
     def set_attr_accessors
