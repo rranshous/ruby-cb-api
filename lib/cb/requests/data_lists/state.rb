@@ -3,7 +3,7 @@ require_relative '../base'
 module Cb
   module Requests
     module DataLists
-      class CountryCodes < Base
+      class State < Base
         def endpoint_uri
           Cb.configuration.uri_state
         end
@@ -11,7 +11,7 @@ module Cb
         def http_method
           :get
         end
-        
+
         def query
           {
               :CountryCode => args[:country_code]
