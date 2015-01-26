@@ -5,6 +5,8 @@ module Cb
 
         def for(cb_response_class)
           JSON.parse File.read(json_data_filepath cb_response_class)
+        rescue
+          nil
         end
 
         private
