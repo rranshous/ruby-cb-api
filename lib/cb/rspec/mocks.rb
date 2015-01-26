@@ -33,7 +33,7 @@ module Cb
       private
 
       def cb_api_stubbing_error(cb_request_class)
-        message = "An attempt to call the CB API using #{ cb_request_class } was made. You need to stub out the API call!"
+        message = "An attempt to call the CB API using #{ cb_request_class } was made. Stub out the Cb::Client call!"
 
         StandardError.new message
       end
