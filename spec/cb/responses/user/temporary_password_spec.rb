@@ -3,10 +3,7 @@ require 'cb/responses/user/temporary_password'
 module Cb
   describe Responses::User::TemporaryPassword do
     let(:json_hash) do
-      {
-        'Errors' => '',
-        'TemporaryPassword' => 'hotdog_sandwich'
-      }
+      Cb::RSpec::Data.for described_class
     end
 
     context '#new' do

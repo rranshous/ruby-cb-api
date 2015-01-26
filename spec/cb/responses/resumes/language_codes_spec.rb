@@ -3,7 +3,7 @@ require 'spec_helper'
 module Cb
   module Responses
     describe LanguageCodes do
-      let(:response_stub) { JSON.parse(File.read('spec/support/response_stubs/language_codes.json')) }
+      let(:response_stub) { Cb::RSpec::Data.for described_class }
       let(:response) { Cb::Responses::LanguageCodes.new(response_stub) }
 
       it { expect(response.models.first).to be_an_instance_of(Cb::Models::LanguageCode) }

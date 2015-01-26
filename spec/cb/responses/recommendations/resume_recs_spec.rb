@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Cb::Responses::Recommendations do
-  let(:response_hash) { JSON.parse(File.read('spec/support/response_stubs/recommendations_for_resume.json')) }
+  let(:response_hash) { Cb::RSpec::Data.for described_class }
   let(:api_job_result_collection) { Cb::Responses::Recommendations.new(response_hash) }
 
   it { expect(api_job_result_collection.models.first).to be_an_instance_of Cb::Models::RecommendedJob }

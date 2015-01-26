@@ -3,19 +3,7 @@ require 'spec_helper'
 module Cb
   describe Responses::EmailSubscription::Response do
     let(:json_hash) do
-      {
-        "Errors" => [],
-        "Status" => "Success",
-        "SubscriptionValues" => {
-            "CareerResources" => true,
-            "ProductSponsorInfo" => false,
-            "ApplicantSurveyInvites" => true,
-            "JobRecs" => true,
-            "DJR" => false,
-            "ResumeViewed" => true,
-            "ApplicationViewed" => false
-          }
-        }
+      Cb::RSpec::Data.for described_class
     end
 
     context '#new' do

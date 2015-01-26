@@ -3,9 +3,7 @@ require 'spec_helper'
 module Cb
   describe Responses::ApplicationExternal::SubmitApplication do
     let(:json_hash) do
-      { 'Errors' => nil,
-        'ApplyUrl' => "website.com"
-      }
+      Cb::RSpec::Data.for described_class
     end
 
     context '#new' do

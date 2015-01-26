@@ -3,28 +3,7 @@ require 'spec_helper'
 module Cb
   describe Responses::WorkStatus::List do
     let(:json_hash) do
-      {
-        "Errors" => nil,
-        "WorkStatuses" => [
-          {
-            "Key" => "CTCT",
-            "Description" => [
-              {
-                "Language" => "French",
-                "Value" => "Citoyen"
-              },
-              {
-                "Language" => "Dutch",
-                "Value" => "Inwoner"
-              },
-              {
-                "Language" => "English",
-                "Value" => "US Citizen"
-              }
-            ]
-          }
-        ]
-      }
+      Cb::RSpec::Data.for described_class
     end
 
     describe '#new' do

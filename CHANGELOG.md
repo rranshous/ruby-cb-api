@@ -3,6 +3,7 @@ Version History
     * All Version bumps are required to update this file as well!!
 ----
 
+* 15.2.0 Adding RSpec helpers to aid with writing RSpec tests in consuming Ruby applications
 * 15.1.0 Added resume post
 * 15.0.3 Add desc to doc.rake so it shows in `rake -T`
 * 15.0.2 Include the rake tasks in the gem

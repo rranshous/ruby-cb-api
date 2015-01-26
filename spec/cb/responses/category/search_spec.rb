@@ -3,43 +3,7 @@ require 'spec_helper'
 module Cb
   describe Responses::Category::Search do
     let(:json_hash) do
-      {
-        "ResponseCategories" =>
-          {"Errors" => nil,
-           "CountryCode" => "US",
-           "TimeResponseSent" => "5/30/2014 11:14:59 AM",
-           "Categories" =>
-             {"Category" => [
-               {
-                "Code" => "JN001",
-                "Name" => {
-                 "@language" => "en-US",
-                 "#text" => "Accounting"
-                }},
-              {
-                "Code" => "JN002",
-                "Name" =>
-                  {
-                    "@language" => "en-US",
-                    "#text" => "Admin - Clerical"
-                }},
-              {
-                "Code" => "JN054",
-                "Name" =>
-                  {
-                    "@language" => "en-US",
-                    "#text" => "Automotive"
-                }},
-              {
-                "Code" => "JN038",
-                "Name" =>
-                  {
-                    "@language" => "en-US",
-                    "#text" => "Banking"
-                }}]
-             }
-          }
-      }
+      Cb::RSpec::Data.for described_class
     end
 
     context '#new' do

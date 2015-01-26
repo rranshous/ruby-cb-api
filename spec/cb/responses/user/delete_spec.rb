@@ -3,13 +3,7 @@ require 'cb/responses/user/delete'
 module Cb
   describe Responses::User::Delete do
     let(:json_hash) do
-      {
-        'Errors' => '',
-        'ResponseUserDelete' => {
-          'Request' => 'Can you hear me?',
-          'Status' => 'trifled whale'
-        }
-      }
+      Cb::RSpec::Data.for described_class
     end
 
     context '#new' do

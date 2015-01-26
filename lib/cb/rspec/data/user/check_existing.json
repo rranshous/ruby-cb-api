@@ -1,0 +1,13 @@
+{
+  "Errors": "",
+  "ResponseUserCheck": {
+    "Request": {
+        "Email": "wut"
+    },
+    "UserCheckStatus": "walrus",
+    "ResponseExternalID": "1",
+    "ResponseOAuthToken": "A",
+    "ResponsePartnerID": "5",
+    "ResponseTempPassword": "false"
+  }
+}

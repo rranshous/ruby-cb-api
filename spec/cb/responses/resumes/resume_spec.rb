@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Cb::Responses::Resume do
-  let(:response) { JSON.parse(File.read('spec/support/response_stubs/resume_get.json')) }
+  let(:response) { Cb::RSpec::Data.for described_class }
   let(:resumes) { Cb::Responses::Resume.new(response) }
   context 'when the Api response comes back as expected' do
     it { expect(resumes.models.first).to be_an_instance_of Cb::Models::Resume }

@@ -1,0 +1,22 @@
+{
+  "Errors": null,
+  "WorkStatuses": [
+    {
+      "Key": "CTCT",
+      "Description": [
+        {
+          "Language": "French",
+          "Value": "Citoyen"
+        },
+        {
+          "Language": "Dutch",
+          "Value": "Inwoner"
+        },
+        {
+          "Language": "English",
+          "Value": "US Citizen"
+        }
+      ]
+    }
+  ]
+}

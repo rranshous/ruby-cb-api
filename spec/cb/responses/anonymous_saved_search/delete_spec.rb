@@ -2,9 +2,7 @@ require 'spec_helper'
 module Cb
   describe Responses::AnonymousSavedSearch::Delete do
     let(:json_hash) do
-      {
-        'Status' => 'yay'
-      }
+      Cb::RSpec::Data.for described_class
     end
 
     context '#new' do

@@ -3,26 +3,7 @@ require 'spec_helper'
 module Cb
   describe Responses::Education::Get do
     let(:json_hash) do
-      {
-        "ResponseEducationCodes" => {
-          "Errors" => nil,
-          "CountryCode" => "US",
-          "TimeResponseSent" => "6/2/2014 10:32:44 AM",
-          "EducationCodes" => {
-            "Education" => [
-              {
-                "Code" => "DRNS","Name" => {"@language" => "en-US","#text" => "Not Specified"}
-              },
-              {
-                "Code" => "DR3210","Name" => {"@language" => "en-US","#text" => "None"}
-              },
-              {
-                "Code" => "DR3211","Name" => {"@language" => "en-US","#text" => "High School"}
-              }
-            ]
-          }
-        }
-      }
+      Cb::RSpec::Data.for described_class
     end
 
     context '#new' do

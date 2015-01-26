@@ -1,0 +1,13 @@
+{
+  "Errors": [],
+  "Status": "Success",
+  "SubscriptionValues": {
+    "CareerResources": true,
+    "ProductSponsorInfo": false,
+    "ApplicantSurveyInvites": true,
+    "JobRecs": true,
+    "DJR": false,
+    "ResumeViewed": true,
+    "ApplicationViewed": false
+  }
+}

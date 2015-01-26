@@ -3,19 +3,7 @@ require 'cb/responses/user/check_existing'
 module Cb
   describe Responses::User::CheckExisting do
     let(:json_hash) do
-      {
-          'Errors' => '',
-          'ResponseUserCheck' => {
-            'Request' => {
-                'Email' => "wut"
-            },
-            'UserCheckStatus' => 'walrus',
-            'ResponseExternalID' => '1',
-            'ResponseOAuthToken' => 'A',
-            'ResponsePartnerID' => '5',
-            'ResponseTempPassword' => 'false'
-          }
-      }
+      Cb::RSpec::Data.for described_class
     end
 
     context '#new' do

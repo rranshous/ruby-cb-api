@@ -3,12 +3,7 @@ require 'cb/responses/user/retrieve'
 module Cb
   describe Responses::User::Retrieve do
     let(:json_hash) do
-      {
-        'Errors' => '',
-        'ResponseUserInfo' => {
-            'Request' => "HEY"
-        }
-      }
+      Cb::RSpec::Data.for described_class
     end
 
     context '#new' do

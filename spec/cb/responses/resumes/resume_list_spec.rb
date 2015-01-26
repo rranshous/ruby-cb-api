@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Cb::Responses::ResumeList do
-  let(:response) { JSON.parse(File.read('spec/support/response_stubs/v3_resume_list.json')) }
+  let(:response) { Cb::RSpec::Data.for described_class }
 
   context 'when the api response comes back as expected' do
     let(:list) { Cb::Responses::ResumeList.new(response) }

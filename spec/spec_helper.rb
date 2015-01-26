@@ -10,6 +10,7 @@ end
 
 require 'rubygems'
 require 'cb'
+require 'cb/rspec/data'
 require 'webmock/rspec'
 require 'pry'
 

@@ -2,52 +2,7 @@ require 'spec_helper'
 module Cb
   describe Responses::AnonymousSavedSearch::Create do
     let(:json_hash) do
-      {
-        "Errors" => [],
-        "Status" => "Success",
-        "ExternalID" => "testID",
-        "AnonymousSavedSearch" => {
-          "SearchName" => "search name",
-          "IsDailyEmail" => "true",
-          "DailyValue" => "",
-          "EmailAddress" => "email@example.com",
-          "CobrandCode" => "",
-          "SiteID" => "",
-          "HostSite" => "host site",
-          "SearchParameters" => {
-            "BooleanOperator" => "boolean operator",
-            "Category" => "",
-            "EducationCode" => "education code",
-            "EmpType" => "emp type",
-            "ExcludeCompanyNames" => "exclude company names",
-            "ExcludeJobTitles" => "exclude job titles",
-            "ExcludeKeywords" => "exclude keywords",
-            "ExcludeNational" => false,
-            "IndustryCodes" => "industry codes",
-            "JobTitle" => "job title",
-            "Keywords" => "jobs",
-            "Location" => "atlanta",
-            "OrderBy" => "order by",
-            "OrderDirection" => "order direction",
-            "PayHigh" => 100,
-            "PayInfoOnly" => false,
-            "PayLow" => 10,
-            "PostedWithin" => 3,
-            "Radius" => 50,
-            "SpecificEducation" => false,
-            "JCPositionLevel" => "",
-            "JCLocation" => "",
-            "JCAdvertiserflags" => "",
-            "JCJobNature" => "",
-            "JCSchools" => "",
-            "JobCategory" => "job category",
-            "Company" => "",
-            "City" => "",
-            "State" => "",
-            "Country" => nil
-          }
-        }
-      }
+      Cb::RSpec::Data.for described_class
     end
 
     context '#new' do

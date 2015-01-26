@@ -3,13 +3,7 @@ require 'cb/responses/user/change_password'
 module Cb
   describe Responses::User::ChangePassword do
     let(:json_hash) do
-      {
-        'Errors' => '',
-        'ResponseUserChangePW' => {
-          'Request' => {},
-          'Status' => 'Made it!!!!!!!!'
-        }
-      }
+      Cb::RSpec::Data.for described_class
     end
 
     context '#new' do

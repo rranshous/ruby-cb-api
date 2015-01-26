@@ -1,0 +1,17 @@
+{
+  "TotalResults": 1,
+  "ReturnedResults": 1,
+  "Results": [
+    {
+      "resumeID": "resume_id",
+      "desiredJobTitle": "test resume",
+      "privacySetting": "Private",
+      "resumeFileData": "this is a test resume",
+      "resumeFileName": "test.txt",
+      "hostSite": "US"
+    }
+  ],
+  "Errors": [],
+  "Timestamp": "2015-01-14T07:37:19.4536506-05:00",
+  "Status": "Success"
+}

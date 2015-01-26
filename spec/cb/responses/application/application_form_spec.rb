@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Cb::Responses::ApplicationForm do
-  let(:response_stub) { JSON.parse(File.read('spec/support/response_stubs/application_form.json')) }
+  let(:response_stub) { Cb::RSpec::Data.for described_class }
 
   context 'when the API response comes back as expected' do
     it 'contains application form models' do
